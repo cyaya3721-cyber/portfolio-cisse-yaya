@@ -1,880 +1,829 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio professionnel de Cissé Yaya - Étudiant en Électronique, Informatique et Télécommunications à l'INP-HB.">
-  <title>Cissé Yaya — Portfolio EIT</title>
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --bg-dark: #090d16;
-      --bg-card: rgba(18, 26, 43, 0.7);
-      --bg-card-hover: rgba(28, 40, 65, 0.85);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-accent: rgba(225, 29, 72, 0.3);
-      
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      
-      --primary: #e11d48; /* Burgundy / Rouge modern */
-      --primary-glow: rgba(225, 29, 72, 0.35);
-      --secondary: #881337;
-      --accent: #f43f5e;
-      --accent-cyan: #38bdf8;
-      
-      --sidebar-width: 280px;
-      --radius: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-    }
-
-    body {
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* --- BACKGROUND GLOW EFFECTS --- */
-    .glow-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.25;
-    }
-
-    .orb-1 {
-      top: -10%;
-      right: 10%;
-      width: 500px;
-      height: 500px;
-      background: var(--primary);
-    }
-
-    .orb-2 {
-      bottom: 10%;
-      left: 20%;
-      width: 400px;
-      height: 400px;
-      background: #4f46e5;
-    }
-
-    /* --- SIDEBAR DYNAMIQUE VERTICALE --- */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: rgba(13, 19, 33, 0.85);
-      backdrop-filter: blur(20px);
-      border-right: 1px solid var(--border);
-      padding: 30px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      z-index: 100;
-      transition: var(--transition);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 1.2rem;
-      box-shadow: 0 0 20px var(--primary-glow);
-    }
-
-    .brand-text h2 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-text span {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .nav-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 30px;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-radius: 12px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      transition: var(--transition);
-      position: relative;
-    }
-
-    .nav-item:hover, .nav-item.active {
-      color: #fff;
-      background: rgba(225, 29, 72, 0.12);
-      border: 1px solid rgba(225, 29, 72, 0.25);
-    }
-
-    .nav-item.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 20%;
-      height: 60%;
-      width: 4px;
-      background: var(--primary);
-      border-radius: 0 4px 4px 0;
-      box-shadow: 0 0 10px var(--primary);
-    }
-
-    .nav-icon {
-      font-size: 1.1rem;
-    }
-
-    .cv-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .cv-box p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .btn-cv {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 10px 14px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 8px 20px var(--primary-glow);
-      transition: var(--transition);
-    }
-
-    .btn-cv:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px var(--primary-glow);
-    }
-
-    /* --- MOBILE HEADER & TOGGLE --- */
-    .mobile-header {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: rgba(13, 19, 33, 0.9);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 200;
-    }
-
-    .menu-toggle {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    /* --- MAIN CONTENT AREA --- */
-    .main-wrapper {
-      margin-left: var(--sidebar-width);
-      flex: 1;
-      padding: 40px 60px;
-      position: relative;
-      z-index: 1;
-    }
-
-    section {
-      padding: 60px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .section-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .section-heading {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      background: linear-gradient(180deg, #fff 0%, #9ca3af 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* --- HERO SECTION --- */
-    .hero {
-      min-height: 80vh;
-      display: flex;
-      align-items: center;
-    }
-
-    .hero-content {
-      max-width: 800px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(225, 29, 72, 0.1);
-      border: 1px solid rgba(225, 29, 72, 0.3);
-      color: var(--accent);
-      font-size: 0.82rem;
-      font-weight: 700;
-      margin-bottom: 24px;
-    }
-
-    .dot-pulse {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.8rem, 5vw, 4.2rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      margin-bottom: 20px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #f43f5e, #fb7185, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      padding: 14px 28px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border-radius: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 10px 25px var(--primary-glow);
-      transition: var(--transition);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 35px var(--primary-glow);
-    }
-
-    .btn-secondary {
-      padding: 14px 28px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      border-radius: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .btn-secondary:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* --- SKILLS SECTION (COMPÉTENCES) --- */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .skill-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      backdrop-filter: blur(10px);
-      transition: var(--transition);
-    }
-
-    .skill-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--border-accent);
-      background: var(--bg-card-hover);
-    }
-
-    .skill-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .skill-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: rgba(225, 29, 72, 0.15);
-      color: var(--accent);
-      display: grid;
-      place-items: center;
-      font-size: 1.3rem;
-    }
-
-    .skill-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .tag {
-      padding: 5px 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* --- PROJECTS SECTION --- */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-top: 30px;
-    }
-
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--border-accent);
-    }
-
-    .project-body {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .project-category {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .project-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .project-card p {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .project-footer {
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .project-link {
-      color: var(--accent);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    /* --- CONTACT SECTION --- */
-    .contact-container {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 30px;
-    }
-
-    .contact-info {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .contact-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: rgba(225, 29, 72, 0.1);
-      color: var(--accent);
-      display: grid;
-      place-items: center;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: #fff;
-      font-family: inherit;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* --- RESPONSIVE MOBILE --- */
-    @media (max-width: 992px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .mobile-header {
-        display: flex;
-      }
-
-      .main-wrapper {
-        margin-left: 0;
-        padding: 90px 24px 40px;
-      }
-
-      .contact-container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Portfolio de Cissé Yaya, étudiant en Électronique, Informatique et Télécommunications à l’INP-HB.">
+<title>Cissé Yaya — Portfolio EIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:light-dark(#f4f3f4,#151416);
+  --panel:light-dark(#ffffff,#201e22);
+  --panel2:light-dark(#ebe8ea,#2a272c);
+  --text:light-dark(#29252a,#f4f0f2);
+  --muted:light-dark(#6a6368,#b4aab0);
+  --line:light-dark(#d9d2d6,#3d383f);
+  --accent:#a52a46;
+  --accent2:#800020;
+  --accent3:light-dark(#a52a46,#e08aa0);
+  --side:272px;
+  --side-min:78px;
+  --font-title:"Bricolage Grotesque","Inter",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--font-title);margin:0;letter-spacing:-.02em;line-height:1.12}
+::selection{background:#80002066}
+:focus-visible{outline:3px solid var(--accent3);outline-offset:3px;border-radius:8px}
+svg.i{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ MENU VERTICAL ============ */
+.sidebar{
+  position:fixed;inset:0 auto 0 0;width:var(--side);z-index:50;
+  display:flex;flex-direction:column;padding:22px 14px;gap:18px;
+  background:var(--panel);border-right:1px solid var(--line);
+  transition:width .3s cubic-bezier(.2,.8,.2,1),transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.brand{display:flex;align-items:center;gap:12px;padding:0 6px}
+.avatar{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent2),#c0405d);color:#fff;font:800 1.05rem var(--font-title);letter-spacing:.02em}
+.brand-text{min-width:0;white-space:nowrap;overflow:hidden}
+.brand-text b{display:block;font:700 1.02rem var(--font-title)}
+.brand-text small{color:var(--muted);font-size:.78rem}
+.nav{display:flex;flex-direction:column;gap:4px;position:relative;margin-top:6px}
+.nav a{
+  position:relative;display:flex;align-items:center;gap:14px;padding:11px 14px;border-radius:12px;
+  color:var(--muted);font-weight:500;font-size:.95rem;white-space:nowrap;overflow:hidden;
+  transition:background .2s,color .2s
+}
+.nav a:hover{background:var(--panel2);color:var(--text)}
+.nav a.active{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent3);font-weight:600}
+.nav a.active::before{content:"";position:absolute;left:0;top:20%;bottom:20%;width:4px;border-radius:0 4px 4px 0;background:var(--accent)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.progress{height:4px;border-radius:4px;background:var(--panel2);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),#d4778c);transition:width .15s}
+.side-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);
+  background:var(--panel2);cursor:pointer;font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;transition:transform .2s,background .2s}
+.side-btn:hover{transform:translateY(-2px)}
+.side-btn.primary{background:linear-gradient(135deg,var(--accent2),#b52e4b);border-color:transparent;color:#fff}
+.tools{display:flex;gap:8px}
+.tools .side-btn{flex:1;padding:10px}
+.collapse-btn{position:absolute;top:30px;right:-14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--panel);
+  display:grid;place-items:center;cursor:pointer;transition:transform .3s}
+.collapse-btn svg{width:14px;height:14px}
+
+body.collapsed .sidebar{width:var(--side-min)}
+body.collapsed .brand-text,body.collapsed .nav a span,body.collapsed .side-btn span{display:none}
+body.collapsed .nav a,body.collapsed .side-btn{justify-content:center;padding-inline:0}
+body.collapsed .collapse-btn{transform:rotate(180deg)}
+body.collapsed .tools{flex-direction:column}
+
+.main{margin-left:var(--side);transition:margin .3s cubic-bezier(.2,.8,.2,1)}
+body.collapsed .main{margin-left:var(--side-min)}
+
+.topbar{display:none}
+.scrim{display:none}
+
+/* ============ SECTIONS ============ */
+.wrap{width:min(1080px,100% - 56px);margin:auto}
+section{padding:92px 0}
+section.alt{background:color-mix(in srgb,var(--panel2) 45%,transparent);border-block:1px solid var(--line)}
+.head{max-width:680px;margin-bottom:38px}
+.head h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
+.head p{color:var(--muted);margin:12px 0 0}
+.surface{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px}
+.surface p{color:var(--muted);margin:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 20px;border-radius:12px;border:1px solid var(--line);
+  background:var(--panel);font-weight:600;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px #80002026}
+.btn.primary{background:linear-gradient(135deg,var(--accent2),#b52e4b);border-color:transparent;color:#fff}
+.tag{display:inline-block;font-size:.74rem;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:4px 9px;border-radius:8px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding:60px 0;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-180px;top:-140px;width:640px;height:640px;border-radius:50%;
+  background:radial-gradient(circle,#80002030,transparent 65%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;position:relative}
+.status{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:.84rem;color:var(--muted)}
+.status i{width:8px;height:8px;border-radius:50%;background:#3ccf91;box-shadow:0 0 0 5px #3ccf9122}
+.hero h1{font-size:clamp(2.7rem,6vw,5rem);font-weight:800;letter-spacing:-.045em;margin:22px 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent3)}
+.typing{min-height:1.6em;font:600 1.15rem var(--font-title);color:var(--accent3);margin-bottom:14px}
+.typing::after{content:"▍";margin-left:3px;animation:blink 1s steps(1) infinite}
+.hero p.lead{color:var(--muted);font-size:1.06rem;max-width:560px;margin:0 0 28px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.stats{display:flex;gap:34px;margin-top:38px;flex-wrap:wrap}
+.stats b{display:block;font:800 1.9rem var(--font-title);letter-spacing:-.03em}
+.stats small{color:var(--muted);font-size:.84rem}
+
+/* Carte « circuit » du hero */
+.board{aspect-ratio:1;border-radius:28px;border:1px solid var(--line);position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#3b2029,#171719);box-shadow:0 30px 80px #80002030}
+.board svg{position:absolute;inset:0;width:100%;height:100%}
+.board .trace{stroke:#d4778c;stroke-width:1.6;fill:none;stroke-dasharray:6 8;animation:flow 2.4s linear infinite;opacity:.8}
+.board .core{fill:#552536;stroke:#e08aa0;stroke-width:2}
+.board .pin{fill:#e08aa0}
+.board text{fill:#f4e3e8;font:700 11px var(--font-body)}
+
+/* À propos */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.surface h3{font-size:1.15rem;margin-bottom:12px}
+.checks{display:grid;gap:12px;margin-top:20px}
+.checks div{display:flex;gap:12px;color:var(--muted)}
+.checks b{color:#3ccf91}
+
+/* Compétences */
+.skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.skill-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px}
+.skill-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.skill-ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent3)}
+.skill-top h3{font-size:1.1rem}
+.skill-top small{color:var(--muted)}
+.bar-row{margin-top:14px}
+.bar-label{display:flex;justify-content:space-between;font-size:.88rem;font-weight:500;margin-bottom:6px}
+.bar-label span:last-child{color:var(--muted);font-weight:400}
+.bar{height:7px;border-radius:7px;background:var(--panel2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,var(--accent2),#d4778c);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+
+/* Projets */
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+.filter{border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);padding:9px 16px;cursor:pointer;font-weight:600;font-size:.85rem}
+.filter:hover,.filter.selected{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent3);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.projects{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-flow:dense;gap:18px}
+.project{position:relative;display:flex;align-items:flex-end;min-height:340px;padding:0;text-align:left;color:#fff;cursor:pointer;
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#29262b;transition:transform .3s,box-shadow .3s}
+.project.wide{grid-column:span 2}
+.project[hidden]{display:none}
+.project:hover{transform:translateY(-5px);box-shadow:0 24px 50px #80002033}
+.p-art{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,#3b2029,#29262b);color:#e18a9e}
+.p-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.project:hover .p-art img{transform:scale(1.07)}
+.p-art svg.i{width:64px;height:64px;stroke-width:1.2;margin-bottom:90px}
+.p-shade{position:absolute;inset:0;background:linear-gradient(to top,#120a0ee6 8%,#120a0e99 42%,#120a0e00 78%)}
+.p-info{position:relative;padding:22px;display:flex;flex-direction:column;gap:8px;width:100%}
+.p-type{font-size:.8rem;font-weight:600;color:#f0a9ba}
+.p-info h3{font-size:1.25rem;color:#fff}
+.p-info p{margin:0;color:#e4d9dd;font-size:.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.p-info .tag{background:#ffffff1c;border-color:#ffffff30;color:#f4e6ea}
+.p-more{font-size:.85rem;font-weight:600;color:#fff;margin-top:4px}
+.p-count{position:absolute;top:14px;right:14px;background:#000a;color:#fff;padding:5px 11px;border-radius:999px;font-size:.78rem;backdrop-filter:blur(6px)}
+
+/* Timeline */
+.timeline{position:relative;max-width:820px}
+.timeline::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),var(--line))}
+.t-item{position:relative;padding:0 0 26px 48px}
+.t-item::before{content:"";position:absolute;left:2px;top:6px;width:20px;height:20px;border-radius:50%;background:var(--panel);border:4px solid var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 18%,transparent)}
+.t-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.t-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.t-card h3{font-size:1.1rem;margin-bottom:4px}
+.t-card .meta{color:var(--accent3);font-size:.86rem;font-weight:600}
+.t-card p{margin:12px 0 0;color:var(--muted)}
+
+/* CV */
+.cv-card{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.cv-doc{width:96px;height:124px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);display:grid;place-items:center;color:var(--accent3)}
+.cv-doc svg.i{width:40px;height:40px}
+.cv-card h3{font-size:1.3rem;margin-bottom:6px}
+.cv-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.cv-preview{margin-top:22px;display:none}
+.cv-preview.open{display:block}
+.cv-preview iframe{width:100%;height:640px;border:1px solid var(--line);border-radius:14px;background:#fff}
+
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px}
+.contact-list{display:grid;gap:12px;margin-top:22px}
+.c-item{display:flex;align-items:center;gap:14px;padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--panel2)}
+.c-item small{display:block;color:var(--muted)}
+.c-item b{word-break:break-all}
+form{display:grid;gap:14px}
+.field{display:grid;gap:7px}
+.field label{font-size:.88rem;font-weight:600}
+.field input,.field textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:12px 14px;color:var(--text);font:inherit}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px #a52a4630}
+.field textarea{min-height:130px;resize:vertical}
+.help{font-size:.8rem;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:.84rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--panel);border:1px solid var(--line);
+  box-shadow:0 18px 50px #0003;padding:12px 18px;border-radius:12px;z-index:90;transition:.25s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Modales (projet + CV) */
+.modal{position:fixed;inset:0;z-index:80;background:#000b;display:grid;place-items:center;padding:20px;backdrop-filter:blur(4px)}
+.modal[hidden]{display:none}
+.modal-box{position:relative;width:min(980px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:22px;animation:pop .25s}
+.modal-box.cv{height:calc(100vh - 40px);display:flex;flex-direction:column;overflow:hidden}
+.modal-close{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-size:1rem;flex-shrink:0}
+.modal-box>.modal-close{position:absolute;top:14px;right:14px;z-index:3;background:#000a;color:#fff;border-color:#ffffff30}
+.gal{background:#120a0e}
+.gal-main{position:relative;aspect-ratio:16/9;display:grid;place-items:center}
+.gal-main img{width:100%;height:100%;object-fit:contain}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:#000a;color:#fff;font-size:1.5rem;cursor:pointer}
+.gal-nav.prev{left:12px}.gal-nav.next{right:12px}
+.gal-thumbs{display:flex;gap:8px;padding:10px;overflow-x:auto}
+.thumb{width:84px;height:58px;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;flex-shrink:0;opacity:.6;background:none}
+.thumb.on{border-color:var(--accent);opacity:1}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.gal-empty{aspect-ratio:16/6;display:grid;place-items:center;color:#e18a9e;background:linear-gradient(135deg,#3b2029,#29262b)}
+.gal-empty svg.i{width:70px;height:70px;stroke-width:1.2}
+.m-info{padding:26px 28px 30px;display:grid;gap:14px}
+.m-info h2{font-size:1.7rem}
+.m-info p{margin:0;color:var(--muted);white-space:pre-line}
+.m-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.86rem}
+.cv-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.cv-head h3{font-size:1.1rem}
+.cv-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cv-head .btn{padding:9px 14px;font-size:.9rem}
+.cv-frame{flex:1;width:100%;border:0;background:#fff}
+.cv-missing{padding:40px 28px;color:var(--muted)}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(10px)}}
+
+/* Mode admin (?admin) : ajout de projets */
+.fab{position:fixed;right:20px;bottom:20px;z-index:60;padding:14px 20px;border-radius:999px;border:0;cursor:pointer;color:#fff;font-weight:700;
+  background:linear-gradient(135deg,var(--accent2),#b52e4b);box-shadow:0 14px 34px #80002055}
+.fab[hidden],.admin[hidden]{display:none}
+.admin{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:85;background:var(--panel);border-left:1px solid var(--line);
+  overflow:auto;padding:22px;display:grid;gap:16px;align-content:start;box-shadow:-20px 0 60px #0005}
+.admin h3{font-size:1.2rem}
+.admin .help{margin:0}
+.admin form{gap:12px}
+.admin .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin .btn{padding:10px 14px;font-size:.9rem}
+.a-prev{display:flex;gap:8px;flex-wrap:wrap}
+.a-prev div{position:relative;width:74px;height:54px}
+.a-prev img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.a-prev button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:0;background:#c0392b;color:#fff;cursor:pointer;line-height:1;font-size:.7rem}
+.a-list{display:grid;gap:8px}
+.a-item{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.a-item img,.a-item .ph{width:46px;height:36px;border-radius:7px;object-fit:cover;background:#3b2029;flex-shrink:0}
+.a-item span{flex:1;min-width:0;font-size:.88rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-item button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 8px;cursor:pointer;font-size:.78rem}
+
+@media(max-width:960px){.projects{grid-template-columns:repeat(2,1fr)}.project.wide{grid-column:span 2}}
+@media(max-width:600px){.projects{grid-template-columns:1fr}.project.wide{grid-column:auto}.project{min-height:300px}.modal{padding:10px}.m-info{padding:20px}.admin .row{grid-template-columns:1fr}}
+
+/* Apparition au défilement (un seul effet, discret) */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+@keyframes blink{50%{opacity:0}}
+@keyframes flow{to{stroke-dashoffset:-28}}
+
+/* ============ MOBILE / TABLETTE ============ */
+@media(max-width:960px){
+  .topbar{display:flex;position:fixed;top:0;left:0;right:0;z-index:40;align-items:center;justify-content:space-between;
+    padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .topbar .avatar{width:38px;height:38px;border-radius:11px;font-size:.9rem}
+  .burger{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--panel);cursor:pointer;display:grid;place-items:center}
+  .sidebar{width:min(300px,86vw);transform:translateX(-102%);box-shadow:20px 0 60px #0006}
+  body.open .sidebar{transform:none}
+  body.open .scrim{display:block;position:fixed;inset:0;background:#0008;z-index:45}
+  .collapse-btn{display:none}
+  body.collapsed .sidebar{width:min(300px,86vw)}
+  body.collapsed .brand-text,body.collapsed .nav a span,body.collapsed .side-btn span{display:inline}
+  body.collapsed .brand-text{display:block}
+  body.collapsed .nav a,body.collapsed .side-btn{justify-content:flex-start;padding-inline:14px}
+  body.collapsed .side-btn{justify-content:center}
+  .main,body.collapsed .main{margin-left:0;padding-top:64px}
+  .hero{min-height:auto;padding:46px 0 40px}
+  .hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr}
+  .board{max-width:340px;margin:auto;width:100%}
+  .skill-grid{grid-template-columns:1fr}
+  section{padding:64px 0}
+  .cv-card{grid-template-columns:1fr}
+}
+@media(max-width:520px){.wrap{width:calc(100% - 32px)}.stats{gap:22px}.actions .btn{flex:1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}.bar i{width:var(--w)!important}}
+</style>
 </head>
 <body>
 
-  <!-- BACKGROUND GLOWS -->
-  <div class="glow-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+<!-- Barre du haut (mobile) -->
+<div class="topbar">
+  <div class="avatar" aria-hidden="true">CY</div>
+  <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+    <svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<!-- Menu vertical -->
+<aside class="sidebar" id="sidebar" aria-label="Navigation principale">
+  <button class="collapse-btn" id="collapse" aria-label="Réduire ou agrandir le menu">
+    <svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <a class="brand" href="#top" aria-label="Retour à l’accueil">
+    <div class="avatar">CY</div>
+    <div class="brand-text"><b>Cissé Yaya</b><small>Étudiant EIT · INP-HB</small></div>
+  </a>
+  <nav class="nav" id="nav"></nav>
+  <div class="side-foot">
+    <div class="progress" aria-hidden="true"><i id="progress"></i></div>
+    <button class="side-btn primary" id="sideCv" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Voir mon CV</span></button>
+    <div class="tools">
+      <button class="side-btn" id="theme" aria-label="Changer de thème">
+        <svg class="i" viewBox="0 0 24 24"><path d="M21 13A9 9 0 1111 3a7 7 0 0010 10z"/></svg><span>Thème</span>
+      </button>
+    </div>
   </div>
+</aside>
 
-  <!-- MOBILE HEADER -->
-  <header class="mobile-header">
-    <a href="#hero" class="brand">
-      <div class="brand-avatar">CY</div>
-      <div class="brand-text">
-        <h2>Cissé Yaya</h2>
-        <span>Portfolio EIT</span>
-      </div>
-    </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
-  </header>
+<div class="main" id="top">
 
-  <!-- SIDEBAR DYNAMIQUE VERTICALE -->
-  <aside class="sidebar" id="sidebar">
+<!-- ACCUEIL -->
+<header class="hero" id="home">
+  <div class="wrap hero-grid">
     <div>
-      <a href="#hero" class="brand">
-        <div class="brand-avatar">CY</div>
-        <div class="brand-text">
-          <h2>Cissé Yaya</h2>
-          <span>INP-HB · EIT</span>
-        </div>
-      </a>
-
-      <nav class="nav-menu">
-        <a href="#hero" class="nav-item active"><span class="nav-icon">🏠</span> Accueil</a>
-        <a href="#about" class="nav-item"><span class="nav-icon">👤</span> À propos</a>
-        <a href="#skills" class="nav-item"><span class="nav-icon">⚡</span> Compétences</a>
-        <a href="#projects" class="nav-item"><span class="nav-icon">🚀</span> Projets</a>
-        <a href="#experience" class="nav-item"><span class="nav-icon">🎓</span> Parcours</a>
-        <a href="#contact" class="nav-item"><span class="nav-icon">✉️</span> Contact</a>
-      </nav>
+      <div class="status"><i></i>Disponible pour un stage ou une collaboration</div>
+      <h1>Du circuit à l’application, <em>je construis des solutions.</em></h1>
+      <div class="typing" id="typing" aria-live="off"></div>
+      <p class="lead">Étudiant à l’INP-HB, je conçois des projets à la rencontre de l’électronique, de l’IoT, des réseaux et du développement web.</p>
+      <div class="actions">
+        <a class="btn primary" href="#projects">Voir mes projets</a>
+        <button class="btn" id="heroCv" type="button">Voir mon CV</button>
+      </div>
+      <div class="stats" id="stats"></div>
     </div>
-
-    <!-- CV BOX DANS LA NAVIGATION -->
-    <div class="cv-box">
-      <p>Consulter mon CV complet</p>
-      <!-- REMPLACEZ "cv.pdf" PAR LE LIEN VERS VOTRE FICHIER CV REEL -->
-      <a href="cv.pdf" target="_blank" class="btn-cv" download>
-        <span>📄 Télécharger CV</span>
-      </a>
+    <div class="board" aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <path class="trace" d="M200 150V70H90M200 250v80h110M150 200H60v-70M250 200h90v70"/>
+        <rect class="core" x="150" y="150" width="100" height="100" rx="14"/>
+        <text x="200" y="205" text-anchor="middle">ESP32</text>
+        <circle class="pin" cx="90" cy="70" r="6"/><circle class="pin" cx="310" cy="330" r="6"/>
+        <circle class="pin" cx="60" cy="130" r="6"/><circle class="pin" cx="340" cy="270" r="6"/>
+        <text x="90" y="52" text-anchor="middle">Capteurs</text>
+        <text x="310" y="356" text-anchor="middle">Réseau</text>
+        <text x="60" y="114" text-anchor="middle">Données</text>
+        <text x="340" y="296" text-anchor="middle">Web</text>
+      </svg>
     </div>
-  </aside>
+  </div>
+</header>
 
-  <!-- CONTENU PRINCIPAL -->
-  <main class="main-wrapper">
-
-    <!-- HERO SECTION -->
-    <section id="hero" class="hero">
-      <div class="hero-content">
-        <div class="badge">
-          <span class="dot-pulse"></span>
-          <span>Étudiant EIT · INP-HB Yamoussoukro</span>
+<!-- À PROPOS -->
+<section class="alt" id="about">
+  <div class="wrap">
+    <div class="head reveal"><h2>La technique, du circuit à l’application.</h2>
+      <p>Un profil polyvalent qui aime comprendre les systèmes, résoudre des problèmes et construire des solutions utiles.</p></div>
+    <div class="about-grid">
+      <article class="surface reveal">
+        <h3>Mon parcours</h3>
+        <p>Je suis étudiant en Électronique, Informatique et Télécommunications à l’Institut National Polytechnique Félix Houphouët-Boigny (INP-HB). Ma formation me permet d’explorer l’électronique, les systèmes embarqués, les réseaux et les outils logiciels.</p>
+        <div class="checks">
+          <div><b>✓</b><span>Apprendre en réalisant des projets concrets.</span></div>
+          <div><b>✓</b><span>Relier le matériel, les données et les interfaces web.</span></div>
+          <div><b>✓</b><span>Progresser avec rigueur, curiosité et esprit d’équipe.</span></div>
         </div>
-        <h1>
-          Concevoir des solutions <br>
-          <span class="gradient-text">Matérielles & Logicielles.</span>
-        </h1>
-        <p>
-          Passionné par l’électronique, l’IoT, les réseaux informatiques et le développement web. Je transforme les idées techniques en prototypes fonctionnels et performants.
-        </p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn-primary">Explorer mes projets</a>
-          <!-- VOIR CV DIRECTEMENT DANS UN ONGLET -->
-          <a href="cv.pdf" target="_blank" class="btn-secondary">Voir mon CV ↗</a>
+      </article>
+      <article class="surface reveal">
+        <h3>Ce que je recherche</h3>
+        <p>Des opportunités de stage, de collaboration et de mise en pratique dans les domaines de l’IoT, de l’électronique, des réseaux ou du développement de solutions techniques.</p>
+        <div class="tags" style="margin-top:20px">
+          <span class="tag">Systèmes embarqués</span><span class="tag">IoT</span><span class="tag">Réseaux</span><span class="tag">Web</span><span class="tag">Sécurité électronique</span>
         </div>
-      </div>
-    </section>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <!-- SECTION A PROPOS -->
-    <section id="about">
-      <div class="section-title">Qui suis-je ?</div>
-      <h2 class="section-heading">Une vision transversale du système.</h2>
-      <p style="color: var(--text-muted); line-height: 1.8; max-width: 800px;">
-        Élève en Électronique, Informatique et Télécommunications (EIT) à l'INP-HB, mon parcours me permet d'intervenir à toutes les étapes d'un projet technique : du choix des capteurs électroniques à la programmation réseau et l'interface utilisateur web.
-      </p>
-    </section>
+<!-- COMPÉTENCES -->
+<section id="skills">
+  <div class="wrap">
+    <div class="head reveal"><h2>Mes compétences.</h2>
+      <p>Des connaissances acquises en formation et mises en pratique dans des projets et un stage.</p></div>
+    <div class="skill-grid" id="skillGrid"></div>
+  </div>
+</section>
 
-    <!-- SECTION COMPÉTENCES / SAVOIR-FAIRE -->
-    <section id="skills">
-      <div class="section-title">Savoir-faire</div>
-      <h2 class="section-heading">Mes Compétences Techniques</h2>
+<!-- PROJETS -->
+<section class="alt" id="projects">
+  <div class="wrap">
+    <div class="head reveal"><h2>Mes projets.</h2>
+      <p>Clique sur un projet pour voir toutes ses photos et ses détails.</p></div>
+    <div class="filters" id="filters" role="group" aria-label="Filtrer les projets"></div>
+    <div class="projects" id="projectGrid"></div>
+  </div>
+</section>
 
-      <div class="skills-grid">
-        <!-- Carte 1 -->
-        <div class="skill-card">
-          <div class="skill-header">
-            <div class="skill-icon">💻</div>
-            <h3>Développement Web</h3>
-          </div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Création d'applications web et interfaces dynamiques.</p>
-          <div class="skill-tags">
-            <span class="tag">HTML5 / CSS3</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">PHP</span>
-            <span class="tag">Bootstrap</span>
-          </div>
-        </div>
+<!-- PARCOURS -->
+<section id="experience">
+  <div class="wrap">
+    <div class="head reveal"><h2>Formation et expérience.</h2>
+      <p>Un aperçu des expériences qui nourrissent mon profil technique.</p></div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
 
-        <!-- Carte 2 -->
-        <div class="skill-card">
-          <div class="skill-header">
-            <div class="skill-icon">⚙️</div>
-            <h3>Électronique & IoT</h3>
-          </div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Prototypage de cartes, capteurs et systèmes embarqués.</p>
-          <div class="skill-tags">
-            <span class="tag">ESP32</span>
-            <span class="tag">Raspberry Pi</span>
-            <span class="tag">Arduino C++</span>
-            <span class="tag">Capteurs</span>
-          </div>
-        </div>
-
-        <!-- Carte 3 -->
-        <div class="skill-card">
-          <div class="skill-header">
-            <div class="skill-icon">🛰️</div>
-            <h3>Réseaux & Télécoms</h3>
-          </div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Architecture réseau, routage et télécommunications.</p>
-          <div class="skill-tags">
-            <span class="tag">TCP/IP</span>
-            <span class="tag">VLAN</span>
-            <span class="tag">Cisco Packet Tracer</span>
-            <span class="tag">FTTH</span>
-          </div>
-        </div>
-
-        <!-- Carte 4 -->
-        <div class="skill-card">
-          <div class="skill-header">
-            <div class="skill-icon">🗄️</div>
-            <h3>Bases de données & Sécurité</h3>
-          </div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Modélisation de données et vidéo-sécurité / incendie.</p>
-          <div class="skill-tags">
-            <span class="tag">MySQL / MariaDB</span>
-            <span class="tag">Merise</span>
-            <span class="tag">SDI / SSI</span>
-            <span class="tag">APSAD R7</span>
+<!-- CV -->
+<section class="alt" id="cv">
+  <div class="wrap">
+    <div class="head reveal"><h2>Mon CV.</h2><p>Consulte-le en ligne ou télécharge-le au format PDF.</p></div>
+    <div class="surface reveal">
+      <div class="cv-card">
+        <div class="cv-doc"><svg class="i" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/></svg></div>
+        <div>
+          <h3>CV_Cisse_Yaya.pdf</h3>
+          <p>Formation, compétences, stage et projets, réunis sur un seul document. Lis-le directement ici, puis télécharge-le si tu veux le garder.</p>
+          <div class="cv-actions">
+            <button class="btn primary" id="cvView" type="button">Voir le CV</button>
+            <a class="btn" id="cvDownload" href="cv.pdf" download>Télécharger le PDF</a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- SECTION PROJETS -->
-    <section id="projects">
-      <div class="section-title">Réalisations</div>
-      <h2 class="section-heading">Projets Récents</h2>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-body">
-            <div class="project-category">IoT & Énergie</div>
-            <h3>Suivi de Panneau Photovoltaïque</h3>
-            <p>Mesure et télémétrie des paramètres électriques d'un panneau solaire via ESP32 et capteurs dédiés.</p>
-            <div class="project-footer">
-              <span>ESP32 · Capteurs</span>
-              <a href="#" class="project-link">Détails ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-body">
-            <div class="project-category">Embarqué & Sécurité</div>
-            <h3>Contrôle d'Accès RFID</h3>
-            <p>Système d'identification des badges via Raspberry Pi et Python avec journalisation des accès.</p>
-            <div class="project-footer">
-              <span>Raspberry Pi · Python</span>
-              <a href="#" class="project-link">Détails ↗</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-body">
-            <div class="project-category">Sécurité Électronique</div>
-            <h3>Système Détection Incendie (SDI)</h3>
-            <p>Participation à l'étude et l'implantation de détecteurs selon la règle APSAD R7 lors du stage chez AEG Services.</p>
-            <div class="project-footer">
-              <span>Tour C · AEG Services</span>
-              <a href="#" class="project-link">Détails ↗</a>
-            </div>
-          </div>
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="head reveal"><h2>Un projet, un stage ou une collaboration ?</h2>
+      <p>Écris-moi, je réponds dès que possible.</p></div>
+    <div class="contact-grid">
+      <div class="surface reveal">
+        <h3>Mes coordonnées</h3>
+        <div class="contact-list">
+          <div class="c-item"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg><span><small>E-mail</small><b id="emailText"></b></span></div>
+          <div class="c-item"><svg class="i" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span><small>Localisation</small><b>Côte d’Ivoire</b></span></div>
+          <div class="c-item"><svg class="i" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5"/></svg><span><small>Établissement</small><b>INP-HB · Formation EIT</b></span></div>
         </div>
       </div>
-    </section>
+      <form class="surface reveal" id="contactForm">
+        <div class="field"><label for="name">Ton nom</label><input id="name" autocomplete="name" placeholder="Nom et prénom" required></div>
+        <div class="field"><label for="email">Ton e-mail</label><input id="email" type="email" autocomplete="email" placeholder="nom@exemple.com" required></div>
+        <div class="field"><label for="message">Ton message</label><textarea id="message" placeholder="Bonjour, je vous contacte au sujet de…" required></textarea></div>
+        <button class="btn primary" type="submit">Envoyer par e-mail</button>
+        <div class="help">Le bouton ouvre ton application e-mail avec le message prérempli. Rien n’est stocké sur ce site.</div>
+      </form>
+    </div>
+  </div>
+</section>
 
-    <!-- SECTION PARCOURS -->
-    <section id="experience">
-      <div class="section-title">Parcours</div>
-      <h2 class="section-heading">Formation & Expérience</h2>
-      <div style="display: grid; gap: 20px;">
-        <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border);">
-          <h3 style="font-size: 1.1rem; color: var(--accent);">Stage — AEG Services</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px;">Installation SDI - Tour C · Sécurité électronique</p>
-        </div>
-        <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border);">
-          <h3 style="font-size: 1.1rem; color: #fff;">INP-HB — Formation EIT</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px;">Électronique, Informatique et Télécommunications</p>
-        </div>
+<footer><div class="wrap"><span>© <span id="year"></span> Cissé Yaya · Portfolio EIT</span><a href="#top">Retour en haut ↑</a></div></footer>
+</div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-label="Détails"><div class="modal-box" id="modalBox"></div></div>
+
+<button class="fab" id="adminFab" type="button" hidden>＋ Ajouter un projet</button>
+<aside class="admin" id="admin" hidden aria-label="Ajouter un projet">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Gérer mes projets</h3><button class="modal-close" id="aClose" type="button" aria-label="Fermer">✕</button></div>
+  <p class="help">Ajoute tes projets avec leurs vraies photos. Quand tu as fini, clique sur « Télécharger projects.json » et envoie ce fichier sur ton site, à côté de index.html. Les visiteurs verront alors tes projets.</p>
+  <form id="aForm">
+    <div class="field"><label for="aTitle">Titre du projet</label><input id="aTitle" required placeholder="Ex. Station météo connectée"></div>
+    <div class="row">
+      <div class="field"><label for="aCat">Catégorie</label><input id="aCat" list="aCats" required placeholder="iot, web, network…"><datalist id="aCats"><option value="iot"><option value="web"><option value="network"><option value="security"></datalist></div>
+      <div class="field"><label for="aKind">Type</label><input id="aKind" placeholder="Projet académique"></div>
+    </div>
+    <div class="field"><label for="aText">Résumé (2 lignes)</label><textarea id="aText" style="min-height:70px" required></textarea></div>
+    <div class="field"><label for="aDetails">Description détaillée (facultatif)</label><textarea id="aDetails" style="min-height:100px"></textarea></div>
+    <div class="field"><label for="aTags">Technologies (séparées par des virgules)</label><input id="aTags" placeholder="ESP32, Python, MQTT"></div>
+    <div class="field"><label for="aLink">Lien (GitHub, démo…) facultatif</label><input id="aLink" type="url" placeholder="https://"></div>
+    <div class="field"><label for="aFiles">Photos du projet</label><input id="aFiles" type="file" accept="image/*" multiple><div class="a-prev" id="aPrev"></div></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn primary" type="submit" id="aSave">Enregistrer le projet</button><button class="btn" type="button" id="aCancel">Annuler</button></div>
+  </form>
+  <h3 style="font-size:1rem">Mes projets</h3>
+  <div class="a-list" id="aList"></div>
+  <button class="btn primary" type="button" id="aExport">Télécharger projects.json</button>
+  <button class="btn" type="button" id="aReset">Annuler mes modifications</button>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===================================================================
+   ✏️  ZONE À MODIFIER — tout ton contenu est ici
+   =================================================================== */
+
+// 1) Ton CV : mets ton fichier PDF dans le même dossier que ce fichier
+//    (ex. cv.pdf) puis indique son nom ici.
+const CV_URL = 'cv.pdf';
+
+// 2) Ton e-mail
+const PORTFOLIO_EMAIL = 'cyaya3721@gmail.com';
+
+// 3) Les phrases qui défilent dans l’accueil
+const ROLES = ['Électronique & IoT', 'Réseaux & télécoms', 'Développement web', 'Sécurité électronique'];
+
+// 4) TES COMPÉTENCES
+//    Pour ajouter une compétence : ajoute une ligne { name:'…', level:70 } dans "items".
+//    Pour ajouter un domaine : copie un bloc complet { title:… } et change-le.
+//    level = ton niveau de 0 à 100 (mets level:null pour ne pas afficher de barre).
+//    icon = code | chip | network | shield | database | tools | cloud | design
+const SKILLS = [
+  { title:'Développement', icon:'code', sub:'Programmation et applications', items:[
+      {name:'Python', level:75}, {name:'C / Arduino', level:70},
+      {name:'HTML / CSS / JavaScript', level:70}, {name:'PHP', level:60} ]},
+  { title:'Électronique & IoT', icon:'chip', sub:'Capteurs et microcontrôleurs', items:[
+      {name:'ESP32', level:75}, {name:'Arduino', level:75},
+      {name:'Raspberry Pi', level:65}, {name:'Capteurs & mesures', level:70} ]},
+  { title:'Réseaux & télécoms', icon:'network', sub:'Configuration et architecture', items:[
+      {name:'TCP/IP', level:70}, {name:'VLAN', level:65},
+      {name:'Routage', level:60}, {name:'FTTH', level:50} ]},
+  { title:'Données & sécurité', icon:'shield', sub:'Bases de données et sûreté', items:[
+      {name:'SQL / MariaDB', level:65}, {name:'Merise', level:65},
+      {name:'Vidéosurveillance', level:55}, {name:'Détection incendie (APSAD R7)', level:50} ]},
+  // ➜ Exemple de nouveau domaine (retire les // pour l’activer) :
+  // { title:'Outils', icon:'tools', sub:'Logiciels du quotidien', items:[
+  //     {name:'Git', level:60}, {name:'Packet Tracer', level:70} ]},
+];
+
+// 5) TES PROJETS
+//    category : iot | web | network | security (ou invente la tienne, un filtre sera créé tout seul)
+//    image : lien d’une capture (ex. 'img/projet1.jpg') ou '' pour garder l’icône
+//    link : lien de démo/GitHub ou '' si aucun
+const PROJECTS = [
+  { category:'iot', label:'Électronique & IoT', title:'Suivi d’un panneau photovoltaïque',
+    text:'Prototype de mesure des paramètres électriques d’un panneau solaire et de conditions environnementales avec un ESP32 et des capteurs.',
+    tags:['ESP32','Capteurs','Mesures'], kind:'Projet académique', image:'', link:'' },
+  { category:'iot', label:'Systèmes embarqués', title:'Contrôle d’accès RFID',
+    text:'Prototype Raspberry Pi avec lecteur RFID : identification des badges, vérification des accès, signalisation par LED et buzzer.',
+    tags:['Raspberry Pi','Python','SQLite'], kind:'Projet académique', image:'', link:'' },
+  { category:'web', label:'Développement web', title:'Backend et gestion de données',
+    text:'Fonctionnalités côté serveur et structuration de données relationnelles avec MariaDB dans un projet web.',
+    tags:['PHP','MariaDB','SQL'], kind:'Projet académique', image:'', link:'' },
+  { category:'network', label:'Réseaux', title:'Configuration et segmentation réseau',
+    text:'Travaux pratiques sur l’adressage IP, la segmentation en VLAN, la commutation et le routage.',
+    tags:['TCP/IP','VLAN','Packet Tracer'], kind:'Travaux pratiques', image:'', link:'' },
+  { category:'security', label:'Sécurité électronique', title:'Détection incendie — Tour C',
+    text:'Stage chez AEG Services : participation à l’installation d’un système de détection incendie, avec attention portée à l’implantation des détecteurs et à la règle APSAD R7.',
+    tags:['SDI','Détecteurs','R7'], kind:'Stage professionnel', image:'', link:'' },
+  { category:'web', label:'Développement', title:'Portfolio interactif',
+    text:'Site personnel responsive en HTML, CSS et JavaScript, avec menu vertical, filtres de projets et CV téléchargeable.',
+    tags:['HTML','CSS','JavaScript'], kind:'Projet personnel', image:'', link:'' },
+];
+
+// Noms affichés pour les filtres
+const CATEGORY_NAMES = { iot:'Électronique & IoT', web:'Développement web', network:'Réseaux', security:'Sécurité' };
+
+// 6) TON PARCOURS
+const TIMELINE = [
+  { title:'Stage — AEG Services', meta:'Installation d’un système de détection incendie · Tour C', tag:'Sécurité électronique',
+    text:'Participation au projet de système de détection incendie (SDI), notamment autour de l’implantation des détecteurs et de la compréhension de la règle APSAD R7.' },
+  { title:'INP-HB — Formation EIT', meta:'Électronique, Informatique et Télécommunications', tag:'Formation',
+    text:'Acquisition de connaissances en électronique, programmation, réseaux, télécommunications et systèmes techniques, renforcées par des travaux pratiques et des projets.' },
+];
+
+/* ===================================================================
+   FIN DE LA ZONE À MODIFIER — le reste n’a pas besoin d’être touché
+   =================================================================== */
+
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const ICONS={
+  home:'<path d="M4 11l8-7 8 7v9H4zM10 20v-6h4v6"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  folder:'<path d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>',
+  path:'<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 010 6H9a3 3 0 000 6h6.5"/>',
+  file:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h6"/>',
+  mail:'<path d="M4 6h16v12H4zM4 7l8 6 8-6"/>',
+  code:'<path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/>',
+  chip:'<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+  network:'<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  database:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+  tools:'<path d="M14.5 6.5a4 4 0 005 5L10 21a2.1 2.1 0 01-3-3zM14.5 6.5l3-3"/>',
+  cloud:'<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.6 1.2A3.5 3.5 0 0117 18z"/>',
+  design:'<path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s-.5-2 1-2H17a4 4 0 004-4c0-5-4-10-9-10z"/><circle cx="8" cy="11" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16" cy="11" r="1"/>',
+  iot:'<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+  web:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>',
+  security:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+};
+const icon=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||ICONS.star}</svg>`;
+
+/* --- Menu vertical --- */
+const NAV=[['home','Accueil','home'],['about','À propos','user'],['skills','Compétences','star'],['projects','Projets','folder'],['experience','Parcours','path'],['cv','Mon CV','file'],['contact','Contact','mail']];
+$('#nav').innerHTML=NAV.map(([id,label,ic])=>`<a href="#${id}" data-id="${id}" title="${label}">${icon(ic)}<span>${label}</span></a>`).join('');
+const links=$$('#nav a');
+
+const setOpen=o=>{document.body.classList.toggle('open',o);$('#burger').setAttribute('aria-expanded',String(o))};
+$('#burger').addEventListener('click',()=>setOpen(!document.body.classList.contains('open')));
+$('#scrim').addEventListener('click',()=>setOpen(false));
+links.forEach(a=>a.addEventListener('click',()=>setOpen(false)));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+
+try{ if(localStorage.getItem('menu')==='collapsed') document.body.classList.add('collapsed'); }catch(e){}
+$('#collapse').addEventListener('click',()=>{
+  const c=document.body.classList.toggle('collapsed');
+  try{localStorage.setItem('menu',c?'collapsed':'open')}catch(e){}
+});
+
+/* Thème clair / sombre */
+try{ const t=localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+$('#theme').addEventListener('click',()=>{
+  const dark=getComputedStyle(document.documentElement).colorScheme.includes('dark') && document.documentElement.dataset.theme!=='light';
+  const next=dark?'light':'dark';
+  document.documentElement.dataset.theme=next;
+  try{localStorage.setItem('theme',next)}catch(e){}
+});
+
+/* Section active + barre de progression */
+const sections=NAV.map(([id])=>document.getElementById(id));
+function onScroll(){
+  const y=window.scrollY+window.innerHeight*0.35;
+  let current=sections[0].id;
+  sections.forEach(s=>{if(s.offsetTop<=y)current=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.dataset.id===current));
+  const max=document.documentElement.scrollHeight-window.innerHeight;
+  $('#progress').style.width=(max>0?Math.min(100,window.scrollY/max*100):0)+'%';
+}
+window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);
+
+/* --- Accueil : texte qui défile + chiffres --- */
+(function typing(){
+  const el=$('#typing');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=ROLES.join(' · ');return}
+  let r=0,c=0,del=false;
+  (function tick(){
+    const word=ROLES[r];
+    c+=del?-1:1; el.textContent=word.slice(0,c);
+    let d=del?35:70;
+    if(!del&&c===word.length){del=true;d=1400}
+    else if(del&&c===0){del=false;r=(r+1)%ROLES.length;d=300}
+    setTimeout(tick,d);
+  })();
+})();
+const nSkills=SKILLS.reduce((n,g)=>n+g.items.length,0);
+function renderStats(){
+  $('#stats').innerHTML=[[SKILLS.length,'domaines'],[nSkills,'compétences'],[projects.length,'projets']]
+    .map(([n,l])=>`<div><b>${n}</b><small>${l}</small></div>`).join('');
+}
+
+/* --- Compétences --- */
+$('#skillGrid').innerHTML=SKILLS.map(g=>`
+  <article class="skill-card reveal">
+    <div class="skill-top"><div class="skill-ico">${icon(g.icon)}</div><div><h3>${esc(g.title)}</h3><small>${esc(g.sub||'')}</small></div></div>
+    ${g.items.map(it=>it.level==null
+      ? `<div class="tags" style="margin-top:10px"><span class="tag">${esc(it.name)}</span></div>`
+      : `<div class="bar-row"><div class="bar-label"><span>${esc(it.name)}</span><span>${it.level}%</span></div><div class="bar" role="img" aria-label="${esc(it.name)} : ${it.level}%"><i style="--w:${it.level}%" data-w="${it.level}"></i></div></div>`
+    ).join('')}
+  </article>`).join('');
+
+/* --- Modales --- */
+const modal=$('#modal'),box=$('#modalBox');
+function openModal(html,cls=''){box.className='modal-box '+cls;box.innerHTML=html;modal.hidden=false;document.body.style.overflow='hidden';const c=$('.modal-close',box);if(c)c.focus()}
+function closeModal(){modal.hidden=true;box.innerHTML='';document.body.style.overflow=''}
+modal.addEventListener('click',e=>{if(e.target===modal||e.target.closest('.modal-close'))closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal()});
+
+/* --- Projets --- */
+const ADMIN=new URLSearchParams(location.search).has('admin');
+let projects=[],currentFilter='all';
+const norm=p=>({id:p.id||('p'+Math.random().toString(36).slice(2,8)),category:p.category||'autre',label:p.label||'',title:p.title||'',text:p.text||'',
+  details:p.details||'',tags:p.tags||[],kind:p.kind||'',images:p.images||(p.image?[p.image]:[]),link:p.link||''});
+async function loadProjects(){
+  let list=null;
+  if(ADMIN){try{const d=localStorage.getItem('projects_draft');if(d)list=JSON.parse(d)}catch(e){}}
+  if(!list){try{const r=await fetch('projects.json',{cache:'no-store'});if(r.ok)list=await r.json()}catch(e){}}
+  projects=(list||PROJECTS).map(norm);
+}
+const catName=c=>CATEGORY_NAMES[c]||c;
+function renderProjects(){
+  const cats=[...new Set(projects.map(p=>p.category))];
+  if(currentFilter!=='all'&&!cats.includes(currentFilter))currentFilter='all';
+  $('#filters').innerHTML=`<button class="filter ${currentFilter==='all'?'selected':''}" data-f="all">Tous</button>`+
+    cats.map(c=>`<button class="filter ${currentFilter===c?'selected':''}" data-f="${esc(c)}">${esc(catName(c))}</button>`).join('');
+  $('#projectGrid').innerHTML=projects.map((p,i)=>`
+    <button class="project reveal ${i%5===0?'wide':''}" data-i="${i}" data-category="${esc(p.category)}" ${currentFilter==='all'||p.category===currentFilter?'':'hidden'} aria-label="Voir le projet ${esc(p.title)}">
+      <div class="p-art">${p.images[0]?`<img src="${esc(p.images[0])}" alt="" loading="lazy">`:icon(p.category)}</div>
+      <div class="p-shade"></div>
+      ${p.images.length>1?`<span class="p-count">${p.images.length} photos</span>`:''}
+      <div class="p-info">
+        <span class="p-type">${esc(p.label||catName(p.category))}</span>
+        <h3>${esc(p.title)}</h3><p>${esc(p.text)}</p>
+        <div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+        <span class="p-more">Voir le projet →</span>
       </div>
-    </section>
+    </button>`).join('');
+  $$('.filter').forEach(b=>b.addEventListener('click',()=>{
+    currentFilter=b.dataset.f;
+    $$('.filter').forEach(x=>x.classList.toggle('selected',x===b));
+    $$('.project').forEach(c=>c.hidden=!(currentFilter==='all'||c.dataset.category===currentFilter));
+  }));
+  $$('.project').forEach(c=>c.addEventListener('click',()=>openProject(+c.dataset.i)));
+  if(window.io)$$('#projectGrid .reveal').forEach(el=>io.observe(el));
+}
+function openProject(i){
+  const p=projects[i],imgs=p.images;let cur=0;
+  const gal=imgs.length
+    ?`<div class="gal"><div class="gal-main"><img id="galImg" src="${esc(imgs[0])}" alt="${esc(p.title)}">${imgs.length>1?'<button class="gal-nav prev" aria-label="Photo précédente">‹</button><button class="gal-nav next" aria-label="Photo suivante">›</button>':''}</div>
+       ${imgs.length>1?`<div class="gal-thumbs">${imgs.map((s,k)=>`<button class="thumb ${k?'':'on'}" data-k="${k}" aria-label="Photo ${k+1}"><img src="${esc(s)}" alt=""></button>`).join('')}</div>`:''}</div>`
+    :`<div class="gal-empty">${icon(p.category)}</div>`;
+  openModal(`<button class="modal-close" aria-label="Fermer">✕</button>${gal}
+    <div class="m-info">
+      <div class="m-meta"><span class="tag">${esc(p.label||catName(p.category))}</span>${p.kind?`<span>${esc(p.kind)}</span>`:''}</div>
+      <h2>${esc(p.title)}</h2>
+      <p>${esc(p.details||p.text)}</p>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      ${p.link?`<div><a class="btn primary" href="${esc(p.link)}" target="_blank" rel="noopener">Ouvrir le lien ↗</a></div>`:''}
+    </div>`);
+  if(imgs.length>1){
+    const go=k=>{cur=(k+imgs.length)%imgs.length;$('#galImg',box).src=imgs[cur];$$('.thumb',box).forEach((t,n)=>t.classList.toggle('on',n===cur))};
+    $('.gal-nav.prev',box).onclick=()=>go(cur-1);$('.gal-nav.next',box).onclick=()=>go(cur+1);
+    $$('.thumb',box).forEach(t=>t.onclick=()=>go(+t.dataset.k));
+    box.onkeydown=e=>{if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1)};
+  }
+}
 
-    <!-- SECTION CONTACT -->
-    <section id="contact" style="border-bottom: none;">
-      <div class="section-title">Contact</div>
-      <h2 class="section-heading">Travaillons ensemble</h2>
+/* --- Parcours --- */
+$('#timeline').innerHTML=TIMELINE.map(t=>`
+  <div class="t-item reveal"><article class="t-card">
+    <div class="t-top"><div><h3>${esc(t.title)}</h3><div class="meta">${esc(t.meta)}</div></div><span class="tag">${esc(t.tag)}</span></div>
+    <p>${esc(t.text)}</p></article></div>`).join('');
 
-      <div class="contact-container">
-        <div class="contact-info">
-          <h3>Restons en contact</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
-            N'hésitez pas à me contacter pour toute opportunité de stage, projet ou collaboration.
-          </p>
-          <div class="contact-item">
-            <div class="contact-icon">✉️</div>
-            <div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">E-mail</div>
-              <strong>votre.email@example.com</strong>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">📍</div>
-            <div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">Localisation</div>
-              <strong>Côte d'Ivoire (INP-HB Yamoussoukro)</strong>
-            </div>
-          </div>
-        </div>
+/* --- CV : voir + télécharger --- */
+const cvDl=$('#cvDownload');cvDl.href=CV_URL;cvDl.download='CV_Cisse_Yaya.pdf';
+async function openCv(){
+  setOpen(false);
+  let ok=true;
+  try{const r=await fetch(CV_URL,{method:'HEAD'});ok=r.ok}catch(e){ok=true}
+  openModal(`<div class="cv-head"><h3>Mon CV</h3><div class="cv-head-actions">
+      <a class="btn primary" href="${esc(CV_URL)}" download="CV_Cisse_Yaya.pdf">Télécharger</a>
+      <a class="btn" href="${esc(CV_URL)}" target="_blank" rel="noopener">Nouvel onglet</a>
+      <button class="modal-close" aria-label="Fermer">✕</button></div></div>`+
+    (ok?`<iframe class="cv-frame" src="${esc(CV_URL)}" title="Mon CV"></iframe>`
+       :`<div class="cv-missing">Le fichier « ${esc(CV_URL)} » est introuvable. Ajoute ton CV en PDF à côté de index.html, avec ce nom.</div>`),'cv');
+}
+['sideCv','heroCv','cvView'].forEach(id=>$('#'+id).addEventListener('click',openCv));
 
-        <form class="contact-info" action="mailto:votre.email@example.com" method="post" enctype="text/plain">
-          <div class="form-group">
-            <label for="name">Votre Nom</label>
-            <input type="text" id="name" required placeholder="Ex: Jean Dupont">
-          </div>
-          <div class="form-group">
-            <label for="email">Votre Email</label>
-            <input type="email" id="email" required placeholder="nom@exemple.com">
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" rows="4" required placeholder="Bonjour Cissé..."></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">
-            Envoyer le message ↗
-          </button>
-        </form>
-      </div>
-    </section>
+/* --- Contact --- */
+$('#emailText').innerHTML=`<a href="mailto:${esc(PORTFOLIO_EMAIL)}">${esc(PORTFOLIO_EMAIL)}</a>`;
+$('#contactForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=$('#name').value.trim(),m=$('#message').value.trim(),s=$('#email').value.trim();
+  const subject=encodeURIComponent('Prise de contact — Portfolio');
+  const body=encodeURIComponent('Bonjour Cissé Yaya,\n\n'+m+'\n\nCordialement,\n'+n+'\n'+s);
+  window.location.href='mailto:'+PORTFOLIO_EMAIL+'?subject='+subject+'&body='+body;
+});
 
-  </main>
+/* --- Utilitaires --- */
+$('#year').textContent=new Date().getFullYear();
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4200)}
 
-  <script>
-    // GESTION DU MENU MOBILE
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
+/* Apparition + remplissage des barres */
+window.io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  e.target.classList.add('visible');
+  $$('.bar i',e.target).forEach(b=>b.style.width=b.dataset.w+'%');
+  io.unobserve(e.target);
+}),{threshold:.12});
+$$('.reveal').forEach(el=>io.observe(el));
+onScroll();
+/* --- Mode admin (?admin) --- */
+let editIdx=null,formImgs=[];
+const fileToData=f=>new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{
+  const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.78))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(f)});
+function saveDraft(){try{localStorage.setItem('projects_draft',JSON.stringify(projects))}catch(e){toast('Brouillon trop lourd pour le navigateur : télécharge projects.json maintenant.')}}
+function renderPrev(){
+  $('#aPrev').innerHTML=formImgs.map((src,k)=>`<div><img src="${esc(src)}" alt=""><button type="button" data-k="${k}" aria-label="Retirer la photo">✕</button></div>`).join('');
+  $$('#aPrev button').forEach(b=>b.onclick=()=>{formImgs.splice(+b.dataset.k,1);renderPrev()});
+}
+function renderAdminList(){
+  $('#aList').innerHTML=projects.map((p,i)=>`<div class="a-item">${p.images[0]?`<img src="${esc(p.images[0])}" alt="">`:'<div class="ph"></div>'}<span>${esc(p.title)}</span>
+    <button type="button" data-a="up" data-i="${i}" aria-label="Monter">↑</button><button type="button" data-a="edit" data-i="${i}">Modifier</button><button type="button" data-a="del" data-i="${i}">Supprimer</button></div>`).join('');
+  $$('#aList button').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i,a=b.dataset.a;
+    if(a==='up'&&i>0){[projects[i-1],projects[i]]=[projects[i],projects[i-1]]}
+    if(a==='del'&&confirm('Supprimer ce projet ?'))projects.splice(i,1);
+    if(a==='edit'){const p=projects[i];editIdx=i;formImgs=[...p.images];
+      $('#aTitle').value=p.title;$('#aCat').value=p.category;$('#aKind').value=p.kind;$('#aText').value=p.text;$('#aDetails').value=p.details;
+      $('#aTags').value=p.tags.join(', ');$('#aLink').value=p.link;renderPrev();$('#aSave').textContent='Mettre à jour';$('#aTitle').focus();return}
+    saveDraft();refreshAll();
+  });
+}
+function resetForm(){editIdx=null;formImgs=[];$('#aForm').reset();renderPrev();$('#aSave').textContent='Enregistrer le projet'}
+function refreshAll(){renderProjects();renderStats();renderAdminList()}
+function initAdmin(){
+  $('#adminFab').hidden=false;
+  $('#adminFab').onclick=()=>{$('#admin').hidden=false;renderAdminList()};
+  $('#aClose').onclick=()=>$('#admin').hidden=true;
+  $('#aCancel').onclick=resetForm;
+  $('#aFiles').onchange=async e=>{
+    for(const f of e.target.files){try{formImgs.push(await fileToData(f))}catch(err){toast('Image illisible : '+f.name)}}
+    e.target.value='';renderPrev();
+  };
+  $('#aForm').onsubmit=e=>{
+    e.preventDefault();
+    const cat=$('#aCat').value.trim().toLowerCase();
+    const p=norm({id:editIdx!=null?projects[editIdx].id:null,category:cat,label:catName(cat),title:$('#aTitle').value.trim(),kind:$('#aKind').value.trim(),
+      text:$('#aText').value.trim(),details:$('#aDetails').value.trim(),tags:$('#aTags').value.split(',').map(t=>t.trim()).filter(Boolean),link:$('#aLink').value.trim(),images:formImgs});
+    if(editIdx!=null)projects[editIdx]=p;else projects.push(p);
+    saveDraft();resetForm();refreshAll();toast('Projet enregistré. Pense à télécharger projects.json.');
+  };
+  $('#aExport').onclick=()=>{
+    const blob=new Blob([JSON.stringify(projects,null,1)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='projects.json';a.click();URL.revokeObjectURL(a.href);
+  };
+  $('#aReset').onclick=()=>{if(confirm('Effacer tes modifications non publiées ?')){try{localStorage.removeItem('projects_draft')}catch(e){}location.reload()}};
+}
 
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-    });
+/* Démarrage */
+loadProjects().then(()=>{renderStats();renderProjects();if(ADMIN)initAdmin();onScroll()});
 
-    // HIGHLIGHT DU MENU AU DEFLEMENT
-    const sections = document.querySelectorAll('section');
-    const navItems = document.querySelectorAll('.nav-item');
-
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - 200)) {
-          current = section.getAttribute('id');
-        }
-      });
-
-      navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('href') === `#${current}`) {
-          item.classList.add('active');
-        }
-      });
-    });
-  </script>
+</script>
 </body>
 </html>
