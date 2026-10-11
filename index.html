@@ -353,6 +353,15 @@ canvas.sim-cv{width:100%;height:auto;border:1px solid var(--line);border-radius:
 @keyframes marquee{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.split .w>i{transform:none!important}.marquee .track{animation:none;flex-wrap:wrap;width:auto}}
 
+/* Illustrations par domaine */
+.art{display:block}
+.art-img{object-fit:cover}
+.p-art .art{position:absolute;top:0;left:0;width:100%;height:64%}
+.gal-empty{position:relative;aspect-ratio:16/8;display:block}
+.gal-empty .art{position:absolute;inset:0;width:100%;height:100%}
+.skill-art{height:130px;border-radius:14px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)}
+.skill-art .art{width:100%;height:100%}
+
 /* Apparition au défilement (un seul effet, discret) */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
 .reveal.visible{opacity:1;transform:none}
@@ -608,6 +617,8 @@ const SKILLS = [
   { title:'Électronique & IoT', icon:'chip', sub:'Capteurs et microcontrôleurs', items:[
       {name:'ESP32', level:75}, {name:'Raspberry Pi', level:65},
       {name:'ACS712 · INA219', level:null}, {name:'DHT11 · DS18B20', level:null}, {name:'LDR', level:null} ]},
+  { title:'Robotique', icon:'robot', art:'robotics', sub:'Systèmes mobiles et agricoles', items:[
+      {name:'Prototype de robot agricole', level:null}, {name:'Microcontrôleurs et capteurs', level:null} ]},
   { title:'Réseaux & télécoms', icon:'network', sub:'Configuration et transmission', items:[
       {name:'TCP/IP · modèle OSI', level:70}, {name:'VLAN · trunk 802.1Q', level:65},
       {name:'Routage · SSH', level:60}, {name:'Packet Tracer · PuTTY', level:null},
@@ -629,24 +640,24 @@ const SKILLS = [
 //    sim : 'pv' | 'rfid' | 'vlan' | 'fire' pour afficher le bouton « Simulation », ou '' sinon
 //    link : lien de démo/GitHub ou ''
 const PROJECTS = [
-  { category:'iot', title:'Suivi d’un panneau photovoltaïque', kind:'Projet académique', sim:'pv',
+  { category:'iot', art:'solar', title:'Suivi d’un panneau photovoltaïque', kind:'Projet académique', sim:'pv',
     text:'ESP32 qui mesure tension, courant, puissance et énergie d’un panneau solaire, avec température, humidité et éclairement.',
     details:'Objectif : mesurer les performances électriques d’un panneau solaire et suivre les conditions environnementales.\n\nCarte ESP32, capteurs de courant et de tension (ACS712, INA219), température (DS18B20), température/humidité (DHT11) et estimation de l’irradiance avec une LDR. Alimentation par régulateur LM2596. Les données sont transmises vers une interface web en HTTP. Travail sur les calculs de rendement et sur la fiabilité des mesures.',
     tags:['ESP32','INA219','ACS712','DS18B20','DHT11','LDR','HTTP'], images:[], link:'' },
-  { category:'iot', title:'Contrôle d’accès RFID', kind:'Projet académique', sim:'rfid',
+  { category:'iot', art:'rfid', title:'Contrôle d’accès RFID', kind:'Projet académique', sim:'rfid',
     text:'Raspberry Pi 4 et lecteur RC522 : le badge est vérifié dans une base SQLite, l’accès est signalé par LED, buzzer et écran LCD.',
     details:'Objectif : autoriser ou refuser l’accès selon l’identifiant d’un badge RFID.\n\nRaspberry Pi 4 Model B, lecteur RFID RC522, programmation Python, base SQLite, écran LCD 16×2 en I²C, LED verte, LED rouge et buzzer. Vérification des badges enregistrés et gestion des badges inconnus. Une interface web pour consulter et gérer les informations est envisagée.',
     tags:['Raspberry Pi 4','RC522','Python','SQLite','LCD I²C'], images:[], link:'' },
-  { category:'iot', title:'Éclairage horticole solaire', kind:'Projet évoqué', sim:'',
+  { category:'iot', art:'solar', title:'Éclairage horticole solaire', kind:'Projet évoqué', sim:'',
     text:'Alimenter un dispositif d’éclairage pour plantes à partir de panneaux photovoltaïques.',
     details:'Projet autour de l’utilisation de panneaux photovoltaïques pour alimenter un dispositif d’éclairage destiné aux plantes.', tags:['Photovoltaïque','Éclairage'], images:[], link:'' },
-  { category:'iot', title:'Prototype de robot agricole', kind:'Projet évoqué', sim:'',
+  { category:'robotics', art:'robotics', title:'Prototype de robot agricole', kind:'Projet évoqué', sim:'',
     text:'Prototype de robot pour l’agriculture, dont les fonctionnalités sont en cours de définition.',
     details:'Projet de prototype de robot agricole. Les fonctionnalités précises et l’état d’avancement restent à préciser.', tags:['Robotique','Agriculture'], images:[], link:'' },
-  { category:'web', title:'eFarm — backend', kind:'Projet académique', sim:'',
+  { category:'web', art:'data', title:'eFarm — backend', kind:'Projet académique', sim:'',
     text:'Partie serveur et gestion des données d’une application agricole, avec MariaDB.',
     details:'Développement de la partie serveur (backend), terminée, avec MariaDB et gestion des données. Le frontend n’était pas terminé au moment de la rédaction du rapport.', tags:['MariaDB','Backend','SQL'], images:[], link:'' },
-  { category:'web', title:'Gestion de supermarché (Merise)', kind:'Projet académique', sim:'',
+  { category:'web', art:'data', title:'Gestion de supermarché (Merise)', kind:'Projet académique', sim:'',
     text:'Modélisation d’une base de données de supermarché : MCD, MCT, tables et rôles des utilisateurs.',
     details:'Modélisation Merise (MCD et MCT) d’une application de gestion de supermarché. Tables envisagées : PRODUIT, STOCK, CLIENT, UTILISATEUR, VENTE, DETAIL_VENTE, PAIEMENT, FOURNISSEUR, COMMANDE, DETAIL_COMMANDE. Rôles : caissier, responsable de stock, directeur et administrateur.', tags:['Merise','MCD','MCT','SQL'], images:[], link:'' },
   { category:'web', title:'Portfolio personnel', kind:'Projet personnel', sim:'',
@@ -682,7 +693,12 @@ const PROJECTS = [
 ];
 
 // Noms affichés pour les filtres
-const CATEGORY_NAMES = { iot:'Électronique & IoT', web:'Développement web', network:'Réseaux', security:'Sécurité', cloud:'Cloud & serveurs', ml:'Machine learning' };
+const CATEGORY_NAMES = { iot:'Électronique & IoT', web:'Développement web', network:'Réseaux', security:'Sécurité', cloud:'Cloud & serveurs', ml:'Machine learning', robotics:'Robotique' };
+
+// IMAGES DES DOMAINES : par défaut, des illustrations sont dessinées pour chaque domaine.
+// Pour mettre TES vraies photos, indique le chemin d’une image, par exemple robotics:'img/robot.jpg'.
+// Clés : robotics | iot | solar | rfid | web | data | network | security | cloud | ml
+const DOMAIN_IMAGES = { robotics:'', iot:'', solar:'', rfid:'', web:'', data:'', network:'', security:'', cloud:'', ml:'' };
 
 // 6) TON PARCOURS
 const TIMELINE = [
@@ -714,6 +730,7 @@ const ICONS={
   database:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
   tools:'<path d="M14.5 6.5a4 4 0 005 5L10 21a2.1 2.1 0 01-3-3zM14.5 6.5l3-3"/>',
   ml:'<circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="18" cy="16" r="2"/><path d="M8 6l2.500 4.500M8 18l2.500-4.500M14 11l2.500-2M14 13l2.500 2"/>',
+  robot:'<rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9 17h6M3 12v3M21 12v3"/>',
   cloud:'<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.6 1.2A3.5 3.5 0 0117 18z"/>',
   design:'<path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s-.5-2 1-2H17a4 4 0 004-4c0-5-4-10-9-10z"/><circle cx="8" cy="11" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16" cy="11" r="1"/>',
   iot:'<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
@@ -742,12 +759,65 @@ function splitWords(el){
 }
 $$('.hero h1').forEach(splitWords);
 $$('.head h2').forEach(h=>{splitWords(h);h.classList.add('sec')});
-const TICKER=['ESP32','Raspberry Pi','Python','C / Arduino','HTML · CSS · JavaScript','PHP','MariaDB','SQLite','VLAN','TCP/IP','Packet Tracer','AWS EC2','Nginx','Linux','APSAD R7','FTTH','Merise','GitHub'];
+const TICKER=['ESP32','Raspberry Pi','Python','C / Arduino','HTML · CSS · JavaScript','PHP','MariaDB','SQLite','VLAN','TCP/IP','Packet Tracer','Robotique','AWS EC2','Nginx','Linux','APSAD R7','FTTH','Merise','GitHub'];
 $('#track').innerHTML=[...TICKER,...TICKER].map(t=>`<span>${esc(t)}</span>`).join('');
 
 /* --- Photo --- */
 $('#heroPhoto').src=PHOTO_URL;
 $$('.avatar').forEach(a=>a.innerHTML=`<img src="${PHOTO_URL}" alt="">`);
+
+const ARTMAP={code:'web',chip:'iot',network:'network',database:'data',shield:'security',cloud:'cloud',robot:'robotics'};
+function art(key){
+  const u=DOMAIN_IMAGES[key];
+  if(u)return `<img class="art art-img" src="${esc(u)}" alt="" loading="lazy">`;
+  const S='#e18a9e',L='#f4d6dd',F='#6b2a3d',A='#c0405d',G='#3ccf91';
+  const st=`fill="none" stroke="${S}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"`;
+  const bg=`<rect width="400" height="240" fill="#2b1b22"/><circle cx="335" cy="45" r="95" fill="${A}" opacity=".2"/><circle cx="50" cy="215" r="75" fill="${A}" opacity=".13"/>`;
+  const box=(x,y,w,h,r=8,f=F)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" stroke="${S}" stroke-width="3"/>`;
+  const D={
+    robotics:`<rect x="0" y="190" width="400" height="50" fill="#3a2430"/>`+
+      [30,90,150,210,270,330,380].map(x=>`<path d="M${x} 190v-24" stroke="${G}" stroke-width="3"/><circle cx="${x-6}" cy="168" r="6" fill="${G}"/><circle cx="${x+6}" cy="163" r="6" fill="${G}"/>`).join('')+
+      `<path d="M200 98V72" ${st}/><circle cx="200" cy="67" r="6" fill="${G}"/>`+box(168,96,64,28,7)+box(125,122,150,46,12)+
+      `<circle cx="150" cy="145" r="6" fill="${G}"/><path d="M168 145h70" stroke="${S}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>`+
+      `<circle cx="150" cy="178" r="20" fill="#1c1216" stroke="${S}" stroke-width="3"/><circle cx="150" cy="178" r="7" fill="${S}"/>`+
+      `<circle cx="250" cy="178" r="20" fill="#1c1216" stroke="${S}" stroke-width="3"/><circle cx="250" cy="178" r="7" fill="${S}"/>`+
+      `<path d="M275 135L315 98L346 128" fill="none" stroke="${L}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="275" cy="135" r="7" fill="${A}"/><circle cx="315" cy="98" r="7" fill="${A}"/><path d="M346 128l-8 14M346 128l9 13" stroke="${L}" stroke-width="4" stroke-linecap="round"/>`,
+    iot:[165,183,200,217,235].map(x=>`<path d="M${x} 85v-14M${x} 155v14" ${st}/>`).join('')+[100,120,140].map(y=>`<path d="M150 ${y}h-14M250 ${y}h14" ${st}/>`).join('')+
+      box(150,85,100,70,10)+`<text x="200" y="127" text-anchor="middle" font-family="Arial" font-weight="700" font-size="17" fill="${L}">ESP32</text>`+
+      `<path d="M176 52a34 34 0 0 1 48 0M186 40a20 20 0 0 1 28 0" ${st}/><circle cx="200" cy="60" r="3" fill="${S}"/>`+
+      box(24,150,70,40)+`<text x="59" y="175" text-anchor="middle" font-family="Arial" font-size="12" fill="${L}">DHT11</text><path d="M94 170H120V140H136" ${st}/>`+
+      box(306,150,70,40)+`<text x="341" y="175" text-anchor="middle" font-family="Arial" font-size="12" fill="${L}">INA219</text><path d="M306 170H280V140H264" ${st}/>`,
+    solar:`<circle cx="72" cy="58" r="22" fill="#f0b44c"/>`+[0,1,2,3,4,5,6,7].map(k=>{const a=k*Math.PI/4;return `<path d="M${72+Math.cos(a)*30} ${58+Math.sin(a)*30}L${72+Math.cos(a)*40} ${58+Math.sin(a)*40}" stroke="#f0b44c" stroke-width="3" stroke-linecap="round"/>`}).join('')+
+      `<polygon points="105,172 285,172 325,98 145,98" fill="#262c52" stroke="${S}" stroke-width="3" stroke-linejoin="round"/>`+
+      [.25,.5,.75].map(t=>`<path d="M${145+180*t} 98L${105+180*t} 172" stroke="${S}" stroke-width="2" opacity=".7"/>`).join('')+
+      [122,147].map(y=>{const t=(y-98)/74;return `<path d="M${145-40*t} ${y}H${325-40*t}" stroke="${S}" stroke-width="2" opacity=".7"/>`}).join('')+
+      `<path d="M195 172v28M155 200h80" ${st}/><path d="M352 40l-18 30h14l-8 26 24-36h-15l7-20z" fill="#f0b44c"/>`,
+    rfid:`<g transform="rotate(-8 115 145)"><rect x="55" y="105" width="120" height="78" rx="10" fill="${L}"/><rect x="72" y="125" width="26" height="20" rx="4" fill="#d9a441"/><path d="M72 160h70M72 170h44" stroke="${F}" stroke-width="4" stroke-linecap="round"/></g>`+
+      `<path d="M192 120a30 30 0 0 1 0 50M206 108a46 46 0 0 1 0 74" ${st}/>`+box(240,70,110,130,14)+
+      `<rect x="256" y="86" width="78" height="30" rx="5" fill="#a9c48b"/><text x="295" y="106" text-anchor="middle" font-family="monospace" font-weight="700" font-size="11" fill="#1c2a12">ACCES OK</text>`+
+      `<circle cx="270" cy="142" r="8" fill="${G}"/><circle cx="296" cy="142" r="8" fill="#e5484d"/><path d="M256 172h78" stroke="${S}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>`,
+    web:box(70,45,260,155,14)+`<path d="M70 75H330" stroke="${S}" stroke-width="3"/><circle cx="90" cy="60" r="4" fill="${A}"/><circle cx="104" cy="60" r="4" fill="${S}"/><circle cx="118" cy="60" r="4" fill="${G}"/>`+
+      [[92,98,90,S],[110,116,130,L],[110,134,70,A],[92,152,110,S],[110,170,100,L]].map(([x,y,w,c])=>`<path d="M${x} ${y}h${w}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`).join('')+
+      `<text x="292" y="150" text-anchor="middle" font-family="monospace" font-weight="700" font-size="34" fill="${L}">&lt;/&gt;</text>`,
+    network:`<circle cx="200" cy="42" r="20" fill="${F}" stroke="${S}" stroke-width="3"/><path d="M188 42h24M200 30v24" stroke="${S}" stroke-width="2.5" stroke-linecap="round"/><path d="M200 62V95" ${st}/>`+
+      [60,160,240,340].map((cx,k)=>{const sx=[170,190,210,230][k],c=k<2?A:'#8aa4c8';return `<path d="M${cx} 170L${sx} 131" stroke="${c}" stroke-width="3"/>`+box(cx-28,170,56,36,6)+`<rect x="${cx-20}" y="177" width="40" height="18" rx="3" fill="${c}" opacity=".5"/>`}).join('')+
+      box(150,95,100,36)+[170,190,210,230].map(x=>`<circle cx="${x}" cy="113" r="4" fill="${G}"/>`).join(''),
+    security:`<path d="M200 38L270 64V120C270 160 240 184 200 202C160 184 130 160 130 120V64Z" fill="${F}" stroke="${S}" stroke-width="3" stroke-linejoin="round"/><path d="M172 118l20 20 38-42" fill="none" stroke="${L}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`+
+      box(34,62,52,28,6)+`<circle cx="60" cy="76" r="8" fill="${S}"/><path d="M60 90v20M46 110h28" ${st}/>`+
+      `<path d="M312 42H382" ${st}/><circle cx="347" cy="75" r="26" fill="${F}" stroke="${S}" stroke-width="3"/><circle cx="347" cy="75" r="12" fill="none" stroke="${S}" stroke-width="2.5"/><circle cx="347" cy="75" r="3" fill="${G}"/>`,
+    cloud:`<path d="M130 140a32 32 0 0 1 6-63a52 52 0 0 1 98-8a38 38 0 0 1 26 71z" fill="${F}" stroke="${S}" stroke-width="3" stroke-linejoin="round"/>`+
+      `<path d="M170 165V145M230 165V145" stroke="${S}" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round"/>`+
+      box(150,165,100,20,4)+box(150,190,100,20,4)+[165,165].map((x,k)=>`<circle cx="${x}" cy="${175+k*25}" r="3.5" fill="${G}"/>`).join('')+`<path d="M185 175h50M185 200h50" stroke="${S}" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>`,
+    ml:(()=>{const xs=[90,200,310],ys=[[70,120,170],[55,100,145,190],[95,145]];let l='',n='';
+      for(let a=0;a<2;a++)ys[a].forEach(y1=>ys[a+1].forEach(y2=>l+=`<path d="M${xs[a]} ${y1}L${xs[a+1]} ${y2}" stroke="${S}" stroke-width="1.6" opacity=".35"/>`));
+      xs.forEach((x,a)=>ys[a].forEach((y,k)=>n+=`<circle cx="${x}" cy="${y}" r="12" fill="${(a+k)%3===1?A:F}" stroke="${S}" stroke-width="3"/>`));return l+n})(),
+    data:[70,110,150].map(y=>`<path d="M130 ${y}v40a70 16 0 0 0 140 0v-40" fill="${F}" stroke="${S}" stroke-width="3"/>`).reverse().join('')+
+      [70,110,150].map(y=>`<ellipse cx="200" cy="${y}" rx="70" ry="16" fill="${F}" stroke="${S}" stroke-width="3"/>`).join('')+
+      `<path d="M150 66h40M150 106h40M150 146h40" stroke="${L}" stroke-width="4" stroke-linecap="round" opacity=".8"/><circle cx="250" cy="146" r="4" fill="${G}"/><circle cx="250" cy="106" r="4" fill="${G}"/>`
+  };
+  const body=D[key];
+  return body?`<svg class="art" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${bg}${body}</svg>`:'';
+}
 
 /* --- Menu vertical --- */
 const NAV=[['home','Accueil','home'],['about','À propos','user'],['skills','Compétences','star'],['projects','Projets','folder'],['experience','Parcours','path'],['cv','Mon CV','file'],['contact','Contact','mail']];
@@ -815,6 +885,7 @@ function renderStats(){
 /* --- Compétences --- */
 $('#skillGrid').innerHTML=SKILLS.map(g=>`
   <article class="skill-card reveal">
+    ${(g.art||ARTMAP[g.icon])?`<div class="skill-art">${art(g.art||ARTMAP[g.icon])}</div>`:''}
     <div class="skill-top"><div class="skill-ico">${icon(g.icon)}</div><div><h3>${esc(g.title)}</h3><small>${esc(g.sub||'')}</small></div></div>
     ${g.items.map(it=>it.level==null
       ? `<div class="tags" style="margin-top:10px"><span class="tag">${esc(it.name)}</span></div>`
@@ -833,7 +904,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)close
 const ADMIN=new URLSearchParams(location.search).has('admin');
 let projects=[],currentFilter='all';
 const norm=p=>({id:p.id||('p'+Math.random().toString(36).slice(2,8)),category:p.category||'autre',label:p.label||'',title:p.title||'',text:p.text||'',
-  details:p.details||'',tags:p.tags||[],kind:p.kind||'',images:p.images||(p.image?[p.image]:[]),link:p.link||'',sim:p.sim||''});
+  details:p.details||'',tags:p.tags||[],kind:p.kind||'',images:p.images||(p.image?[p.image]:[]),link:p.link||'',sim:p.sim||'',art:p.art||''});
 async function loadProjects(){
   let list=null;
   if(ADMIN){try{const d=localStorage.getItem('projects_draft');if(d)list=JSON.parse(d)}catch(e){}}
@@ -848,7 +919,7 @@ function renderProjects(){
     cats.map(c=>`<button class="filter ${currentFilter===c?'selected':''}" data-f="${esc(c)}">${esc(catName(c))}</button>`).join('');
   $('#projectGrid').innerHTML=projects.map((p,i)=>`
     <button class="project reveal ${i%5===0?'wide':''}" data-i="${i}" data-category="${esc(p.category)}" ${currentFilter==='all'||p.category===currentFilter?'':'hidden'} aria-label="Voir le projet ${esc(p.title)}">
-      <div class="p-art">${p.images[0]?`<img src="${esc(p.images[0])}" alt="" loading="lazy">`:icon(p.category)}</div>
+      <div class="p-art">${p.images[0]?`<img src="${esc(p.images[0])}" alt="" loading="lazy">`:(art(p.art||p.category)||icon(p.category))}</div>
       <div class="p-shade"></div>
       ${p.sim?'<span class="p-sim">▶ Simulation</span>':''}
       ${p.images.length>1?`<span class="p-count">${p.images.length} photos</span>`:''}
@@ -872,7 +943,7 @@ function openProject(i){
   const gal=imgs.length
     ?`<div class="gal"><div class="gal-main"><img id="galImg" src="${esc(imgs[0])}" alt="${esc(p.title)}">${imgs.length>1?'<button class="gal-nav prev" aria-label="Photo précédente">‹</button><button class="gal-nav next" aria-label="Photo suivante">›</button>':''}</div>
        ${imgs.length>1?`<div class="gal-thumbs">${imgs.map((s,k)=>`<button class="thumb ${k?'':'on'}" data-k="${k}" aria-label="Photo ${k+1}"><img src="${esc(s)}" alt=""></button>`).join('')}</div>`:''}</div>`
-    :`<div class="gal-empty">${icon(p.category)}</div>`;
+    :`<div class="gal-empty">${art(p.art||p.category)||icon(p.category)}</div>`;
   openModal(`<button class="modal-close" aria-label="Fermer">✕</button><div id="galWrap">${gal}</div>
     ${p.sim?`<div class="m-tabs"><button class="m-tab on" data-t="info">Présentation</button><button class="m-tab" data-t="sim">▶ Simulation</button></div>`:''}
     <div class="m-info" id="tabInfo">
