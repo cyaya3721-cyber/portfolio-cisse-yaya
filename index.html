@@ -362,6 +362,15 @@ canvas.sim-cv{width:100%;height:auto;border:1px solid var(--line);border-radius:
 .skill-art{height:130px;border-radius:14px;overflow:hidden;margin-bottom:18px;border:1px solid var(--line)}
 .skill-art .art{width:100%;height:100%}
 
+/* Présentation qui s'écrit et défile */
+.typed{position:relative;height:11.5em;overflow-y:auto;padding:16px 18px;border-left:4px solid var(--accent);border-radius:0 14px 14px 0;
+  background:var(--panel2);color:var(--text);font-size:1rem;line-height:1.75;white-space:pre-line;scroll-behavior:smooth}
+.typed.typing-on #typedText::after{content:"▍";margin-left:2px;color:var(--accent3);animation:blink 1s steps(1) infinite}
+.typed-ctl{display:flex;gap:10px;flex-wrap:wrap}
+.typed-ctl .btn{padding:8px 14px;font-size:.84rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:600px){.typed{height:13em}}
+
 /* Apparition au défilement (un seul effet, discret) */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
 .reveal.visible{opacity:1;transform:none}
@@ -896,7 +905,7 @@ $('#skillGrid').innerHTML=SKILLS.map(g=>`
 /* --- Modales --- */
 const modal=$('#modal'),box=$('#modalBox');
 function openModal(html,cls=''){box.className='modal-box '+cls;box.innerHTML=html;modal.hidden=false;document.body.style.overflow='hidden';const c=$('.modal-close',box);if(c)c.focus()}
-function closeModal(){if(window.simCleanup){window.simCleanup();window.simCleanup=null}modal.hidden=true;box.innerHTML='';document.body.style.overflow=''}
+function closeModal(){clearTimeout(window.typeTimer);if(window.simCleanup){window.simCleanup();window.simCleanup=null}modal.hidden=true;box.innerHTML='';document.body.style.overflow=''}
 modal.addEventListener('click',e=>{if(e.target===modal||e.target.closest('.modal-close'))closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal()});
 
@@ -938,6 +947,26 @@ function renderProjects(){
   $$('.project').forEach(c=>c.addEventListener('click',()=>openProject(+c.dataset.i)));
   if(window.io)$$('#projectGrid .reveal').forEach(el=>io.observe(el));
 }
+/* --- Présentation écrite lettre par lettre, avec défilement --- */
+function startType(text){
+  clearTimeout(window.typeTimer);
+  const out=$('#typedText',box),wrap=$('#typed',box);
+  if(!out||!wrap)return;
+  let i=0,auto=true;
+  out.textContent='';wrap.scrollTop=0;wrap.classList.add('typing-on');
+  wrap.onwheel=wrap.ontouchstart=()=>{auto=false};
+  const finish=()=>{clearTimeout(window.typeTimer);out.textContent=text;wrap.classList.remove('typing-on');wrap.scrollTop=0};
+  window.skipType=finish;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){finish();return}
+  (function tick(){
+    i++;out.textContent=text.slice(0,i);
+    if(auto)wrap.scrollTop=wrap.scrollHeight;
+    if(i>=text.length){wrap.classList.remove('typing-on');return}
+    const c=text[i-1];
+    window.typeTimer=setTimeout(tick,/[.!?:]/.test(c)?260:/[,;]/.test(c)?120:c==='\n'?220:18);
+  })();
+}
+
 function openProject(i){
   const p=projects[i],imgs=p.images;let cur=0;
   const gal=imgs.length
@@ -949,7 +978,8 @@ function openProject(i){
     <div class="m-info" id="tabInfo">
       <div class="m-meta"><span class="tag">${esc(p.label||catName(p.category))}</span>${p.kind?`<span>${esc(p.kind)}</span>`:''}</div>
       <h2>${esc(p.title)}</h2>
-      <p>${esc(p.details||p.text)}</p>
+      <div class="typed" id="typed" role="region" aria-label="Présentation du projet"><span id="typedText" aria-hidden="true"></span></div><p class="sr">${esc(p.details||p.text)}</p>
+      <div class="typed-ctl"><button class="btn" id="tSkip" type="button">Tout afficher</button><button class="btn" id="tReplay" type="button">↻ Rejouer</button></div>
       <div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
       ${p.sim?`<div><button class="btn primary" id="goSim" type="button">▶ Lancer la simulation</button></div>`:''}
       ${p.link?`<div><a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener">Ouvrir le lien ↗</a></div>`:''}
@@ -960,12 +990,16 @@ function openProject(i){
     $('.gal-nav.prev',box).onclick=()=>go(cur-1);$('.gal-nav.next',box).onclick=()=>go(cur+1);
     $$('.thumb',box).forEach(t=>t.onclick=()=>go(+t.dataset.k));
   }
+  const ptxt=p.details||p.text;
+  $('#tSkip',box).onclick=()=>window.skipType&&window.skipType();
+  $('#tReplay',box).onclick=()=>startType(ptxt);
+  startType(ptxt);
   if(p.sim){
     const show=t=>{
       $$('.m-tab',box).forEach(b=>b.classList.toggle('on',b.dataset.t===t));
       $('#tabInfo',box).hidden=t!=='info';$('#galWrap',box).hidden=t!=='info';$('#tabSim',box).hidden=t!=='sim';
-      if(t==='sim')mountSim(p.sim,$('#tabSim',box));
-      else if(window.simCleanup){window.simCleanup();window.simCleanup=null}
+      if(t==='sim'){clearTimeout(window.typeTimer);mountSim(p.sim,$('#tabSim',box))}
+      else{if(window.simCleanup){window.simCleanup();window.simCleanup=null}startType(ptxt)}
       box.scrollTop=0;
     };
     $$('.m-tab',box).forEach(b=>b.onclick=()=>show(b.dataset.t));
